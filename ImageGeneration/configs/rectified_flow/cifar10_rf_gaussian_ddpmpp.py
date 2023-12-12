@@ -33,7 +33,7 @@ def get_config():
   sampling.method = 'rectified_flow'
   sampling.init_type = 'gaussian' 
   sampling.init_noise_scale = 1.0
-  sampling.use_ode_sampler = 'rk45' ### rk45 or euler
+  sampling.use_ode_sampler = 'euler' ### rk45 or euler
   sampling.ode_tol = 1e-5
 
   # data

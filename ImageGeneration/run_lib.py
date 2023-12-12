@@ -291,6 +291,7 @@ def evaluate(config,
       except:
         time.sleep(120)
         state = restore_checkpoint(ckpt_path, state, device=config.device)
+    logging.warning("Checkpoint restored or timed out")
     ema.copy_to(score_model.parameters())
     # Compute the loss function on the full evaluation dataset if loss computation is enabled
     if config.eval.enable_loss:
@@ -339,6 +340,7 @@ def evaluate(config,
     # Generate samples and compute IS/FID/KID when enabled
     if config.eval.enable_sampling:
       num_sampling_rounds = config.eval.num_samples // config.eval.batch_size + 1
+      sum_nfe = 0
       for r in range(num_sampling_rounds):
         logging.info("sampling -- ckpt: %d, round: %d" % (ckpt, r))
 
@@ -347,6 +349,7 @@ def evaluate(config,
           eval_dir, f"ckpt_{ckpt}")
         tf.io.gfile.makedirs(this_sample_dir)
         samples, n = sampling_fn(score_model)
+        sum_nfe += n
         samples = np.clip(samples.permute(0, 2, 3, 1).cpu().numpy() * 255., 0, 255).astype(np.uint8)
         samples = samples.reshape(
           (-1, config.data.image_size, config.data.image_size, config.data.num_channels))
@@ -371,6 +374,7 @@ def evaluate(config,
             io_buffer, pool_3=latents["pool_3"], logits=latents["logits"])
           fout.write(io_buffer.getvalue())
 
+      print("MEAN NFE", sum_nfe / num_sampling_rounds)
       # Compute inception scores, FIDs and KIDs.
       # Load all statistics that have been previously computed and saved for each host
       all_logits = []

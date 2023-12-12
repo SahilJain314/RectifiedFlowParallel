@@ -28,9 +28,9 @@ def get_default_configs():
   
   sampling.sigma_variance = 0.0 # NOTE: sigma variance for turning ODE to SDE
   sampling.init_noise_scale = 1.0
-  sampling.use_ode_sampler = 'rk45'
+  sampling.use_ode_sampler = 'parallel'
   sampling.ode_tol = 1e-5
-  sampling.sample_N = 1000
+  sampling.sample_N = 50
 
   # evaluation
   config.eval = evaluate = ml_collections.ConfigDict()

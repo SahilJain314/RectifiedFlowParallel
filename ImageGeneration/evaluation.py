@@ -43,11 +43,14 @@ def get_inception_model(inceptionv3=False):
 def load_dataset_stats(config):
   """Load the pre-computed dataset statistics."""
   if config.data.dataset == 'CIFAR10':
-    filename = 'assets/stats/cifar10_stats.npz'
+    # filename = 'assets/stats/cifar10_stats.npz'
+    filename = '/home/sahil/Desk/LFS/CS236-final-project/assets/stats/cifar10_stats.npz'
   elif config.data.dataset == 'CELEBA':
-    filename = 'assets/stats/celeba_stats.npz'
+    # filename = 'assets/stats/celeba_stats.npz'
+    filename = '/home/sahil/Desk/LFS/CS236-final-project/assets/stats/celeba_stats.npz'
   elif config.data.dataset == 'LSUN':
-    filename = f'assets/stats/lsun_{config.data.category}_{config.data.image_size}_stats.npz'
+    # filename = f'assets/stats/lsun_{config.data.category}_{config.data.image_size}_stats.npz'
+    filename = f'/home/sahil/Desk/LFS/CS236-final-project/assets/stats/lsun_{config.data.category}_{config.data.image_size}_stats.npz'
   else:
     raise ValueError(f'Dataset {config.data.dataset} stats not found.')
 
